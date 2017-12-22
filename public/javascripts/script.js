@@ -7,9 +7,9 @@ window.onload = function (){
         rotationX: 0,
         rotationY: 0,
         rotationZ: 0,
-        positionX: -1000,
+        positionX: -1500,
         positionY: 0,
-        positionZ: -500
+        positionZ: -800
     }
 
     let canvas = document.getElementById("canvas");
@@ -25,11 +25,15 @@ window.onload = function (){
     scene.add(light);
 
 
-    let camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
+    let camera = new THREE.PerspectiveCamera(25, width / height, 0.1, 10000);
     camera.position.set(0, 0, 1000);
 
     let geometry = new THREE.SphereGeometry(50, 15, 15);
     let material = new THREE.MeshBasicMaterial({color: 0xffffff, vertexColors: THREE.FaceColors});
+
+    for(let i = 0; i < geometry.faces.length; ++i) {
+        geometry.faces[i].color.setRGB(r(), r(), r());
+    }
 
     function r(){
         let rand = Math.random();
