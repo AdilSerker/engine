@@ -14,3 +14,10 @@ body {
 a {
   color: #00B7FF;
 }
+
+#framerate {
+  position: fixed;
+  color: #fff;
+  top: 10px;
+  left: 10px;
+}

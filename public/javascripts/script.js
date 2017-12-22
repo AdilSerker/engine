@@ -54,8 +54,16 @@ window.onload = function (){
     function objectMove(obj){
         obj.positionX += 0.5 * time();
     }
+    let fpsElem = document.getElementById("fps");
+    console.dir(fpsElem);
+    let then = 0;
+    function rendering(now){
+        now *= 0.001;
+        const deltaTime = now - then;
+        then = now;
+        const fps = 1 / deltaTime;
+        fpsElem.textContent = fps.toFixed(1);
 
-    function rendering(){
         objectMove(ball);
 
         requestAnimationFrame(rendering);
