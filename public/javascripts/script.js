@@ -59,8 +59,8 @@ window.onload = function(){
     let v = 0;
 
     function rendering(){
-        if(counter == 0 || counter == 20 || counter == 40 || counter == 60 || counter == 80 || counter == 100
-            || counter == 120 || counter == 140 || counter == 160 || counter == 180 || counter == 200 || counter == 220){
+        if(counter == 0 || counter == 60 || counter == 120 || counter == 180 || counter == 240 || counter == 300
+            || counter == 360 || counter == 420 || counter == 480 || counter == 240 || counter == 300 || counter == 360){
             console.log(Math.round(ball.positionY));
         }
         counter++;
