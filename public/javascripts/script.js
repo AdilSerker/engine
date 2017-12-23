@@ -61,17 +61,16 @@ window.onload = function(){
     function rendering(){
         if(counter == 0 || counter == 60 || counter == 120 || counter == 180 || counter == 240 || counter == 300
             || counter == 360 || counter == 420 || counter == 480 || counter == 240 || counter == 300 || counter == 360){
-            console.log(Math.round(ball.positionY));
+            console.log(Math.round(ball.positionY)/1000);
         }
         counter++;
         const deltaTime = clock.getDelta();
         const fps = 1 / deltaTime;
         fpsElem.textContent = fps.toFixed(1);
-        v += g;
+        v += g*METER/fps;
         ball.positionY -= v * deltaTime;
+        
         ball.rotationZ -= 0.2; 
-
-
 
         mesh.rotation.x = ball.rotationX;
         mesh.rotation.y = ball.rotationY;
