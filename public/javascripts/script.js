@@ -45,8 +45,8 @@ window.onload = function(){
         rotationX: 0,
         rotationY: 0,
         rotationZ: 0,
-        positionX: -3500,
-        positionY: 0,
+        positionX: 0,
+        positionY: 950,
         positionZ: -800,
         mass: 2
     } 
@@ -64,7 +64,7 @@ window.onload = function(){
         const fps = 1 / deltaTime;
         fpsElem.textContent = fps.toFixed(1);
         v += g;
-        ball.positionX += v*deltaTime;
+        ball.positionY -= v*deltaTime;
         ball.rotationZ -= 0.2; 
 
         mesh.rotation.x = ball.rotationX;
