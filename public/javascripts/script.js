@@ -1,4 +1,6 @@
 window.onload = function(){
+    let SECONDS = 1;
+    let METER = 1000;
     const G = 6.67384e-11;
     const EARTH_MASS = 5.9722e+24;
 
@@ -46,26 +48,30 @@ window.onload = function(){
         rotationY: 0,
         rotationZ: 0,
         positionX: 0,
-        positionY: 950,
-        positionZ: -800,
+        positionY: 2250,
+        positionZ: -3800,
         mass: 2
     } 
 
-    let counter = 1;
+    let counter = 0;
     let deltaTimeSum = 0;
-
-    let SECONDS = 1;
-    let METER = 1000;
 
     let v = 0;
 
     function rendering(){
+        if(counter == 0 || counter == 20 || counter == 40 || counter == 60 || counter == 80 || counter == 100
+            || counter == 120 || counter == 140 || counter == 160 || counter == 180 || counter == 200 || counter == 220){
+            console.log(Math.round(ball.positionY));
+        }
+        counter++;
         const deltaTime = clock.getDelta();
         const fps = 1 / deltaTime;
         fpsElem.textContent = fps.toFixed(1);
-        v += g*10;
-        ball.positionY -= v*deltaTime;
+        v += g;
+        ball.positionY -= v * deltaTime;
         ball.rotationZ -= 0.2; 
+
+
 
         mesh.rotation.x = ball.rotationX;
         mesh.rotation.y = ball.rotationY;
