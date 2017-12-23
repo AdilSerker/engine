@@ -63,7 +63,7 @@ window.onload = function(){
         const deltaTime = clock.getDelta();
         const fps = 1 / deltaTime;
         fpsElem.textContent = fps.toFixed(1);
-        v += g;
+        v += g*10;
         ball.positionY -= v*deltaTime;
         ball.rotationZ -= 0.2; 
 
