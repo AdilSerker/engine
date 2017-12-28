@@ -90,4 +90,3 @@ function powerNumber(num, pow) {
     let counter = 0;
     return pow == 0? 1: num * powerNumber(num, pow-1);
 }
-
