@@ -4,7 +4,7 @@ const babel = require('gulp-babel');
 const browserify = require('browserify');
 const buffer = require('vinyl-buffer');
 const rename = require('gulp-rename');
-const sourceMaps = require('gulp-sourcemaps');
+// const sourceMaps = require('gulp-sourcemaps');
 const source = require('vinyl-source-stream');
 const watch = require('gulp-watch');
 
