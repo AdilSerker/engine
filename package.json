@@ -9,14 +9,19 @@
     "babel-polyfill": "^6.26.0",
     "babelify": "^8.0.0",
     "body-parser": "~1.18.2",
+    "browserify": "^15.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
     "gulp-watch": "^5.0.0",
     "morgan": "~1.9.0",
     "nodemon": "^1.13.3",
     "pug": "2.0.0-beta11",
-    "serve-favicon": "^2.4.5"
+    "serve-favicon": "^2.4.5",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
