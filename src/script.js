@@ -48,13 +48,13 @@ scene.add(mesh_1);
 
 
 let ball = {
-    position: new THREE.Vector3(0, 300, 0),
-    mass: 200000000000
+    position: new THREE.Vector3(0, -1000, 0),
+    mass: 37
 }
 
 let ball_1 = {
-    position: new THREE.Vector3(3000, -8000, 0),
-    mass: 200000000000
+    position: new THREE.Vector3(-3000, -8000, 0),
+    mass: 300000000048.3
 }
 
 const MOON = {
@@ -92,17 +92,12 @@ function gravityForce(m1, m2){
     const GRAVITY = 6.67384e-11;
     const r = m1.position.distanceTo(m2.position);
     const FORCE_MODULE = (GRAVITY * mass1 * mass2 / Math.pow(r/METER, 2));
-    const vector = new THREE.Vector3();
-    vector.x = m1.position.x - m2.position.x;
-    vector.y = m1.position.y - m2.position.y;
-    vector.z = m1.position.z - m2.position.z;
 
-    const l = Math.sqrt(
-        Math.pow(vector.x, 2) + Math.pow(vector.y, 2) + Math.pow(vector.z, 2)
-    );
-    vector.x = vector.x/l*FORCE_MODULE;
-    vector.y = vector.y/l*FORCE_MODULE;
-    vector.z = vector.z/l*FORCE_MODULE;
+    const vector = new THREE.Vector3();
+
+    vector.subVectors(m1.position, m2.position);
+    vector.normalize();
+    vector.multiplyScalar(FORCE_MODULE);
 
     return vector;
 }
@@ -112,28 +107,40 @@ function updateSpeed(v, dt, b1, b2, vec){
     const gravity = gravityForce(b1, b2);
     F.add(gravity);
     if(arguments[4]){
-        console.log(F);
         F.add(arguments[4])
     }
     v.y += F.y/ball.mass * METER * dt;
     v.x += F.x/ball.mass * METER * dt;
     v.z += F.z/ball.mass * METER * dt;
 }
+
+function rotateVec(v, angle) {
+    let rotate = new THREE.Vector3();
+    v.normalize();
+    rotate.x = v.x * Math.cos(angle) - v.y * Math.sin(angle);
+    rotate.y = v.x * Math.sin(angle) - v.y * Math.cos(angle);
+    v.x = rotate.x;
+    v.y = rotate.y;
+}
+ball_1.mass *= 4;
 function rendering(){
     const deltaTime = clock.getDelta(); 
     const fps = fpsRender(deltaTime);
 
-    let vec1 = new THREE.Vector3(100000000000 * 25/100, 0, 0);
-    let vec2 = new THREE.Vector3(-100000000000 * 25/100, 0, 0);
+    let firstSpace = gravityForce(ball_1, ball);
+    rotateVec(firstSpace, 90);
+    firstSpace.multiplyScalar(65);
+
+    let firstSpace1 = gravityForce(ball, ball_1);
+    rotateVec(firstSpace1, 90);
+    firstSpace1.multiplyScalar(55);
 
     updatePosition(ball, V, deltaTime);
     updatePosition(ball_1, V1, deltaTime);
 
 
-    updateSpeed(V, deltaTime, ball_1, ball, vec1);
-    updateSpeed(V1, deltaTime, ball, ball_1, vec2);
-
-    // renderGraph(V, deltaTime);
+    updateSpeed(V, deltaTime, ball_1, ball, firstSpace);
+    updateSpeed(V1, deltaTime, ball, ball_1, firstSpace1);
 
     mesh.position.x = ball.position.x;
     mesh.position.y = ball.position.y;
@@ -141,7 +148,7 @@ function rendering(){
 
     mesh_1.position.x = ball_1.position.x;
     mesh_1.position.y = ball_1.position.y;
-    mesh_1.position.z = ball_1.position.z;
+    mesh_1.position.z = ball_1.position.z; 
 
     renderer.render(scene, camera);
     requestAnimationFrame(rendering);
