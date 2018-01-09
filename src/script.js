@@ -49,12 +49,12 @@ scene.add(mesh_1);
 
 let ball = {
     position: new THREE.Vector3(0, -1000, 0),
-    mass: 37
+    mass: 5.9722e+24 / (81.3*100000000000)
 }
 
 let ball_1 = {
-    position: new THREE.Vector3(-3000, -8000, 0),
-    mass: 300000000048.3
+    position: new THREE.Vector3(0, -4844, 0),
+    mass: 5.9722e+24 / 100000000000
 }
 
 const MOON = {
@@ -109,9 +109,9 @@ function updateSpeed(v, dt, b1, b2, vec){
     if(arguments[4]){
         F.add(arguments[4])
     }
-    v.y += F.y/ball.mass * METER * dt;
-    v.x += F.x/ball.mass * METER * dt;
-    v.z += F.z/ball.mass * METER * dt;
+    v.y += F.y/ball.mass * dt;
+    v.x += F.x/ball.mass * dt;
+    v.z += F.z/ball.mass * dt;
 }
 
 function rotateVec(v, angle) {
@@ -122,25 +122,43 @@ function rotateVec(v, angle) {
     v.x = rotate.x;
     v.y = rotate.y;
 }
-ball_1.mass *= 4;
+ball_1.mass *= 10;
+
+let COUNTER_1 = 0;
 function rendering(){
     const deltaTime = clock.getDelta(); 
     const fps = fpsRender(deltaTime);
 
-    let firstSpace = gravityForce(ball_1, ball);
-    rotateVec(firstSpace, 90);
-    firstSpace.multiplyScalar(65);
+    let firstSpace = new THREE.Vector3(1, 0, 0);
+    // rotateVec(firstSpace, 90);
+    firstSpace.multiplyScalar(10000000000000000*2);
 
-    let firstSpace1 = gravityForce(ball, ball_1);
-    rotateVec(firstSpace1, 90);
-    firstSpace1.multiplyScalar(55);
+    // let firstSpace1 = gravityForce(ball, ball_1);
+    // rotateVec(firstSpace1, 90);
+    // firstSpace1.multiplyScalar(70);
 
+
+    let positionBall = ball.position.clone();
+    // let positionBall_1 = ball_1.position.clone();
     updatePosition(ball, V, deltaTime);
-    updatePosition(ball_1, V1, deltaTime);
+    // updatePosition(ball_1, V1, deltaTime);
+    let positionBallDelta = ball.position.clone();
+    // let positionBall_1Delta = ball_1.position.clone();
 
+    let orientBall = new THREE.Vector3();
+    // let orientBall_1 = new THREE.Vector3();
+    orientBall.subVectors(positionBallDelta, positionBall);
+    // orientBall_1.subVectors(positionBall_1Delta, positionBall_1);
+    
+    if (COUNTER_1 < 3 ) {
+        orientBall.add(firstSpace);
+        // orientBall_1.add(firstSpace1);
 
-    updateSpeed(V, deltaTime, ball_1, ball, firstSpace);
-    updateSpeed(V1, deltaTime, ball, ball_1, firstSpace1);
+        COUNTER_1++;
+    }
+
+    updateSpeed(V, deltaTime, ball_1, ball, orientBall);
+    // updateSpeed(V1, deltaTime, ball, ball_1, orientBall_1);
 
     mesh.position.x = ball.position.x;
     mesh.position.y = ball.position.y;
