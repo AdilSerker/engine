@@ -81,10 +81,16 @@ let V = new THREE.Vector3(0, 0, 0);
 let V1 = new THREE.Vector3(0, 0, 0);
 
 function updatePosition(obj, v, dt){
+    let position = obj.position.clone();
     obj.position.x += v.x*dt;
     obj.position.y += v.y*dt;
     obj.position.z += v.z*dt;
-}
+    let positionDelta = obj.position.clone();
+ 
+    let orient = new THREE.Vector3();
+    orient.subVectors(positionDelta, position);
+    return orient;
+ }
 
 function gravityForce(m1, m2){
     const mass1 = m1.mass;
@@ -130,35 +136,19 @@ function rendering(){
     const fps = fpsRender(deltaTime);
 
     let firstSpace = new THREE.Vector3(1, 0, 0);
-    // rotateVec(firstSpace, 90);
     firstSpace.multiplyScalar(10000000000000000*2);
 
-    // let firstSpace1 = gravityForce(ball, ball_1);
-    // rotateVec(firstSpace1, 90);
-    // firstSpace1.multiplyScalar(70);
-
-
-    let positionBall = ball.position.clone();
-    // let positionBall_1 = ball_1.position.clone();
-    updatePosition(ball, V, deltaTime);
-    // updatePosition(ball_1, V1, deltaTime);
-    let positionBallDelta = ball.position.clone();
-    // let positionBall_1Delta = ball_1.position.clone();
-
-    let orientBall = new THREE.Vector3();
-    // let orientBall_1 = new THREE.Vector3();
-    orientBall.subVectors(positionBallDelta, positionBall);
-    // orientBall_1.subVectors(positionBall_1Delta, positionBall_1);
+    
+    let orientBall = updatePosition(ball, V, deltaTime);
+   
     
     if (COUNTER_1 < 3 ) {
         orientBall.add(firstSpace);
-        // orientBall_1.add(firstSpace1);
 
         COUNTER_1++;
     }
 
     updateSpeed(V, deltaTime, ball_1, ball, orientBall);
-    // updateSpeed(V1, deltaTime, ball, ball_1, orientBall_1);
 
     mesh.position.x = ball.position.x;
     mesh.position.y = ball.position.y;
