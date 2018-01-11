@@ -1,5 +1,55 @@
 const THREE = require('three');
 
+class ObjectGenerate {
+    constructor(x, y, z, mass){
+        this.position = new THREE.Vector3(x, y, z);
+        this.mass = mass || 0;
+
+        this.inertia = new THREE.Vector3();
+        this.vec_ = new THREE.Vector3();
+        this.momentum_ = new THREE.Vector3();
+        this.mesh_;
+    }
+
+    updatePosition(dt){
+        const pos = this.position.clone();
+        this.position.addScaledVector(this.vec_, dt);
+        const pos$ = this.position.clone();
+        this.inertia.subVectors(pos$, pos);
+        this.mesh_.mesh.position.copy(this.position);
+    }
+    
+    updateVector(dt, ...vectors){
+        const F = new THREE.Vector3();
+        vectors.forEach((vector) => {
+            F.add(vector);
+        }, this);
+        F.add(this.inertia);
+        this.momentum_.copy(F).divideScalar(this.mass);
+        this.vec_.addScaledVector(this.momentum_, dt);
+    }
+
+    get mesh() {
+        if(!this.mesh_) {
+            this.mesh_ = {
+                geometry: new THREE.SphereGeometry(50, 15, 15),
+                material: new THREE.MeshBasicMaterial({
+                    color: 0xffffff, 
+                    vertexColors: THREE.FaceColors
+                })
+            }
+            this.mesh_.mesh = new THREE.Mesh(
+                this.mesh_.geometry, this.mesh_.material);
+            this.mesh_.mesh.position.copy(this.position);
+        } 
+        return this.mesh_.mesh;
+    }
+
+    addVector(vector) {
+        this.inertia.add(vector)
+    }
+}
+
 const SECONDS = 1;
 const METER = 1000;
 const G = 6.67384e-11;
@@ -35,27 +85,14 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(0, -5000, 10000);
 
-const geometry = new THREE.SphereGeometry(50, 15, 15);
-const material = new THREE.MeshBasicMaterial({
-    color: 0xffffff, 
-    vertexColors: THREE.FaceColors
-});
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
+const ball_2 = new ObjectGenerate(-7000, -2000, 0, );
+ball_2.mass = 5.9722e+24 / (81.3*100000000000);
+scene.add(ball_2.mesh);
 
-const mesh_1 = new THREE.Mesh(geometry, material)
-scene.add(mesh_1);
+const ball_3 = new ObjectGenerate(-7000, -5000, 0, );
+ball_3.mass = 5.9722e+24 / 10000000000;
+scene.add(ball_3.mesh);
 
-
-let ball = {
-    position: new THREE.Vector3(0, -1000, 0),
-    mass: 5.9722e+24 / (81.3*100000000000)
-}
-
-let ball_1 = {
-    position: new THREE.Vector3(0, -4844, 0),
-    mass: 5.9722e+24 / 100000000000
-}
 
 const MOON = {
     position: new THREE.Vector3(0, -1737000000, 0),
@@ -77,21 +114,6 @@ function fpsRender(dt){
 
 const clock = new THREE.Clock();
 
-let V = new THREE.Vector3(0, 0, 0);
-let V1 = new THREE.Vector3(0, 0, 0);
-
-function updatePosition(obj, v, dt){
-    let position = obj.position.clone();
-    obj.position.x += v.x*dt;
-    obj.position.y += v.y*dt;
-    obj.position.z += v.z*dt;
-    let positionDelta = obj.position.clone();
- 
-    let orient = new THREE.Vector3();
-    orient.subVectors(positionDelta, position);
-    return orient;
- }
-
 function gravityForce(m1, m2){
     const mass1 = m1.mass;
     const mass2 = m2.mass;
@@ -108,55 +130,33 @@ function gravityForce(m1, m2){
     return vector;
 }
 
-function updateSpeed(v, dt, b1, b2, vec){
-    let F = new THREE.Vector3();
-    const gravity = gravityForce(b1, b2);
-    F.add(gravity);
-    if(arguments[4]){
-        F.add(arguments[4])
-    }
-    v.y += F.y/ball.mass * dt;
-    v.x += F.x/ball.mass * dt;
-    v.z += F.z/ball.mass * dt;
-}
-
 function rotateVec(v, angle) {
     let rotate = new THREE.Vector3();
     v.normalize();
-    rotate.x = v.x * Math.cos(angle) - v.y * Math.sin(angle);
+    rotate.x = v.x * Math.cos(angle) - v.x * Math.sin(angle);
     rotate.y = v.x * Math.sin(angle) - v.y * Math.cos(angle);
     v.x = rotate.x;
     v.y = rotate.y;
 }
-ball_1.mass *= 10;
+
 
 let COUNTER_1 = 0;
 function rendering(){
     const deltaTime = clock.getDelta(); 
-    const fps = fpsRender(deltaTime);
+    fpsRender(deltaTime);
 
-    let firstSpace = new THREE.Vector3(1, 0, 0);
-    firstSpace.multiplyScalar(10000000000000000*2);
+    let FIRST_SPACE = new THREE.Vector3(1, 0, 0);
+    FIRST_SPACE.multiplyScalar(10000000000000000*2);
 
-    
-    let orientBall = updatePosition(ball, V, deltaTime);
-   
+    ball_2.updatePosition(deltaTime);
     
     if (COUNTER_1 < 3 ) {
-        orientBall.add(firstSpace);
-
+        ball_2.addVector(FIRST_SPACE);
         COUNTER_1++;
     }
+    let gravity_2 = gravityForce(ball_3, ball_2);
 
-    updateSpeed(V, deltaTime, ball_1, ball, orientBall);
-
-    mesh.position.x = ball.position.x;
-    mesh.position.y = ball.position.y;
-    mesh.position.z = ball.position.z;
-
-    mesh_1.position.x = ball_1.position.x;
-    mesh_1.position.y = ball_1.position.y;
-    mesh_1.position.z = ball_1.position.z; 
+    ball_2.updateVector(deltaTime, gravity_2);
 
     renderer.render(scene, camera);
     requestAnimationFrame(rendering);
