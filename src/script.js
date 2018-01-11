@@ -30,12 +30,12 @@ function rendering(){
 
     ball_2.updatePosition(dt);
      
-    if (COUNTER < 5) {
+    if (COUNTER < 4) {
         ball_2.addVector(FIRST_SPACE);
         COUNTER++;
     }
 
-    ball_2.updateVector(dt);
+    ball_2.updateVector(dt, gravity);
     console.log(ball_2.vec_.length());
     space.render();
     fpsRender(dt);
