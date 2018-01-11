@@ -44,5 +44,5 @@ gulp.task('default', () => {
 });
 
 gulp.task('watch', () => {
-    gulp.watch('./src/*.js', ['bundle']);
+    gulp.watch('./src/**/*.js', ['bundle']);
 });

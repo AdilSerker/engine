@@ -1,6 +1,6 @@
 const THREE = require('three');
 
-class ObjectGenerate {
+export class ObjectGenerator {
     constructor(x, y, z, mass){
         this.position = new THREE.Vector3(x, y, z);
         this.mass = mass || 0;
@@ -44,8 +44,12 @@ class ObjectGenerate {
         } 
         return this.mesh_.mesh;
     }
+    get vector() {
+        return this.vec_;
+    }
 
     addVector(vector) {
         this.inertia.add(vector)
     }
+
 }

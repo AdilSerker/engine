@@ -22,8 +22,11 @@ class Spacetime {
         this.render_.render(this.scene_, this.camera_);
     }
 
-    addScene(object){
-        this.scene_.add(object);
+    add(...objects){
+        objects.forEach((object) => {
+            this.scene_.add(object.mesh);
+        })
+        
     }
     deltaTime(){
         return this.time_.getDelta();
@@ -56,3 +59,5 @@ class Spacetime {
         this.camera_.position.set(0, -5000, 10000);
     }
 }
+
+export const spacetime = new Spacetime();
