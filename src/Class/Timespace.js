@@ -34,7 +34,7 @@ export class Timespace {
     }
     accelerate(dt){
         const th = this;
-        for(let i = 0; i < th.objectArray_.length; ++i) {
+        for(let i = 0; i < th.objectArray_.length-1; ++i) {
             for(let j = i + 1; j < th.objectArray_.length; ++j) {
                 this._gravityForce(dt, th.objectArray_[i], th.objectArray_[j])
             }
