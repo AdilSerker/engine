@@ -17,8 +17,8 @@ function renderLoop(){
     let dt = timespace.deltaTime();
     
     webgl.render(dt);
-    timespace.move();
-    timespace.accelerate();
+    timespace.move(dt);
+    timespace.accelerate(dt);
     requestAnimationFrame(renderLoop);
 }
 

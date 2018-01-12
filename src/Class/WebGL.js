@@ -48,9 +48,9 @@ class WebGL {
             60,
             window.innerWidth / window.innerHeight, 
             0.1, 
-            1000
+            100
         );
-        this.camera_.position.set(0, 0, 30);
+        this.camera_.position.set(0, 0, 100);
     }
 }
 
