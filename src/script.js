@@ -27,7 +27,7 @@ const moon3 = new ObjectGenerator(1000, -1000, 0, 100);
 moon3.setMesh(5, 10, 10);
 
 const moon4 = new ObjectGenerator(-1200, 1200, 0, 500);
-moon3.setMesh(15, 10, 10);
+moon4.setMesh(15, 10, 10);
 
 timespace.add(moon4, moon3, moon2, moon, planet);
 

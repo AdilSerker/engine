@@ -5,7 +5,11 @@ export class ObjectGenerator {
     constructor(x, y, z, mass){
         this.mass = mass || 0;
 
-        this.position_ = new Vector3(x, y, z);
+        this.position_ = {
+            x: x,
+            y: y,
+            z: z
+        };
 
         this.vec_ = new Vector3();
         this.geometry_;
@@ -14,10 +18,10 @@ export class ObjectGenerator {
         this.fix_ = false;
     }
     get position() {
-        return this.position_;
+        return this.mesh.position;
     }
     set position(vector){
-        this.position_.copy(vector);
+        this.mesh.position.copy(vector);
     }
     fixPosition(bool){
         this.fix_ = bool;
@@ -26,7 +30,6 @@ export class ObjectGenerator {
         const th = this;
         if(!th.fix_){
             this.position.addScaledVector(this.vec_, dt);
-            this.mesh.position.copy(this.position);
         };
     }
     
@@ -45,7 +48,7 @@ export class ObjectGenerator {
             });
             this.mesh_ = new Mesh(
                 this.geometry_, this.material_);
-            this.mesh_.position.copy(this.position);
+            this.mesh_.position.copy(this.position_);
         } 
         return this.mesh_;
     }
@@ -57,7 +60,7 @@ export class ObjectGenerator {
         });
         this.mesh_ = new Mesh(
             this.geometry_, this.material_);
-        this.mesh_.position.copy(this.position);
+        this.mesh_.position.copy(this.position_);
     }
     get vector() {
         return this.vec_;
