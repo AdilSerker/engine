@@ -10,7 +10,7 @@ const MOON_MASS = 5.9722e+24/81.3;
 const T = 1000;
 
 const orbit = new Vector3(-40000, 40000, 0);
-const orbit2 = new Vector3(56000, -56000, 0);
+const orbit2 = new Vector3(59000, -59000, 0);
 const orbit3 = new Vector3(32000, 32000, 0);
 const orbit4 = new Vector3(150000, 150000, 0);
 
