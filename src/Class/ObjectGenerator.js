@@ -6,40 +6,39 @@ export class ObjectGenerator {
         this.mass = mass || 0;
 
         this.position_ = new Vector3(x, y, z);
-        this.inertia_ = new Vector3();
+
         this.vec_ = new Vector3();
-        this.momentum_ = new Vector3();
         this.geometry_;
         this.material_;
         this.mesh_;
+        this.fix_ = false;
     }
-
     get position() {
         return this.position_;
     }
     set position(vector){
         this.position_.copy(vector);
     }
+    fixPosition(bool){
+        this.fix_ = bool;
+    }
     updatePosition(dt){
-        const pos = this.position.clone();
-        this.position.addScaledVector(this.vec_, dt);
-        const pos$ = this.position.clone();
-        this.inertia_.subVectors(pos$, pos);
-        this.mesh.position.copy(this.position);
+        const th = this;
+        if(!th.fix_){
+            this.position.addScaledVector(this.vec_, dt);
+            this.mesh.position.copy(this.position);
+        };
     }
     
-    updateVector(dt, ...vectors){
-        const F = this.inertia_;
+    updateVector(...vectors){
         vectors.forEach((vector) => {
-            F.add(vector);
-        }, this);
-        this.momentum_.copy(F);
-        this.vec_.addScaledVector(this.momentum_, dt);
+            this.vec_.add(vector.divideScalar(this.mass));
+        }, this);       
     }
 
     get mesh() {
         if(!this.mesh_) {
-            this.geometry_ = new SphereGeometry(1, 20, 20),
+            this.geometry_ = new SphereGeometry(10, 20, 20),
             this.material_ = new MeshBasicMaterial({
                 color: 0xffffff, 
                 vertexColors: FaceColors
@@ -53,9 +52,4 @@ export class ObjectGenerator {
     get vector() {
         return this.vec_;
     }
-    
-    addVector(vector) {
-        this.inertia_.add(vector)
-    }
-
 }

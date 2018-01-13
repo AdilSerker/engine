@@ -5,34 +5,31 @@ const { timespace } = require('./Class/Timespace');
 
 let COUNTER = 0;
 
-const firstspace = new Vector3(0, 0, 0);
-
 const EARTH_MASS = 5.9722e+24;
-const MASS_1 = 2;
+const MOON_MASS = 5.9722e+24/81.3; 
+const T = 1000;
 
-const MASS_2 = 1000;
-const MASS_3 = 100000000;
+const orbit = new Vector3(-600, 600, 0);
+const orbit2 = new Vector3(750, -700, 0);
 
-const ball_1 = new ObjectGenerator(-100, 50, 0, MASS_3);
-const ball_2 = new ObjectGenerator(100, -50, 0, MASS_3);
-timespace.add(ball_1, ball_2);
+const planet = new ObjectGenerator(0, 0, 0, 100000000000000*T);
+const moon = new ObjectGenerator(400, 400, 0, 1);
+const moon2 = new ObjectGenerator(-300, -300, 0, 1);
+timespace.add(moon2, moon, planet);
 
 webgl.setRender(timespace.scene);
+
 function renderLoop(){
-    let dt = timespace.deltaTime();
-    
-    // if(COUNTER < 3){
-    //     ball_1.updateVector(dt, firstspace)
-    //     ball_2.updateVector(dt, firstspace.negate())
-    //     COUNTER++;
-    // }
+    const dt = timespace.deltaTime();
+    if(COUNTER<1){
+        moon.updateVector(orbit);
+        moon2.updateVector(orbit2);
+        COUNTER++;
+    }
 
-
-    
-    
     webgl.render(dt);
     timespace.move(dt);
-    timespace.accelerate(dt);
+    timespace.accelerate();
     requestAnimationFrame(renderLoop);
 }
 
