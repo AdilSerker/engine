@@ -7,39 +7,25 @@ const { timespace } = require('./Class/Timespace');
 let COUNTER = 0;
 const EARTH_MASS = 5.9722e+24;
 const MOON_MASS = 5.9722e+24/81.3; 
-const T = 1000;
+const T = 10e+18;
 
-const orbit = new Vector3(-40000, 40000, 0);
-const orbit2 = new Vector3(59000, -59000, 0);
-const orbit3 = new Vector3(32000, 32000, 0);
-const orbit4 = new Vector3(150000, 150000, 0);
+let red = new ObjectGenerator(0, 3000, 0, T);
+let blue = new ObjectGenerator(-3000, -2000, 0, T);
+let green = new ObjectGenerator(3000, -2000, 0, T);
+red.setMesh(100, 20, 20);
+red.setColor(1, 0, 0);
+blue.setMesh(100, 20, 20);
+blue.setColor(0, 1, 0);
+green.setMesh(100, 20, 20);
+green.setColor(0, 0, 1);
 
-const planet = new ObjectGenerator(0, 0, 0, 100000000000000*T);
-planet.setMesh(150, 20, 20);
-
-const moon = new ObjectGenerator(800, 800, 0, 100);
-moon.setMesh(30, 20, 20);
-
-const moon2 = new ObjectGenerator(-400, -400, 0, 100);
-moon2.setMesh(10, 20, 20);
-
-const moon3 = new ObjectGenerator(1000, -1000, 0, 100);
-moon3.setMesh(5, 10, 10);
-
-const moon4 = new ObjectGenerator(-1200, 1200, 0, 500);
-moon4.setMesh(15, 10, 10);
-
-timespace.add(moon4, moon3, moon2, moon, planet);
+timespace.add(red, blue, green);
 
 webgl.setRender(timespace.scene);
 
 function renderLoop(){
     const dt = timespace.deltaTime();
     if(COUNTER<1){
-        moon.updateVector(orbit);
-        moon2.updateVector(orbit2);
-        moon3.updateVector(orbit3);
-        moon4.updateVector(orbit4);
         COUNTER++;
     }
 

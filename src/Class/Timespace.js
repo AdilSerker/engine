@@ -18,15 +18,18 @@ export class Timespace {
     }
     _gravityForce(a, b) {
         if(a.mass && b.mass && this.gravity) {
-            const th = this;
             const r = a.position.distanceTo(b.position);
             const FORCE_MODULE = this.G * a.mass * b.mass / Math.pow(r, 2);
-            const force = new Vector3();
-            force.subVectors(a.position, b.position);
-            force.normalize();
-            force.multiplyScalar(FORCE_MODULE);
-            a.updateVector(force.negate());
-            b.updateVector(force.negate());
+            const force1 = new Vector3();
+            force1.subVectors(a.position, b.position);
+            force1.normalize();
+            force1.multiplyScalar(FORCE_MODULE);
+            b.updateVector(force1);
+            const force2 = new Vector3();
+            force2.subVectors(b.position, a.position);
+            force2.normalize();
+            force2.multiplyScalar(FORCE_MODULE);
+            a.updateVector(force2);
         }
     }
     move(dt){
@@ -37,9 +40,9 @@ export class Timespace {
     }
     accelerate(){
         const th = this;
-        for(let i = 0; i < th.objectArray_.length-1; ++i) {
-            for(let j = i+1; j < th.objectArray_.length; ++j) {
-                this._gravityForce(th.objectArray_[i], th.objectArray_[j])
+        for(let i = 0; i < th.objectArray_.length-1; i++) {
+            for(let j = i+1; j < th.objectArray_.length; j++) {
+                th._gravityForce(th.objectArray_[i], th.objectArray_[j])
             }
         }
         

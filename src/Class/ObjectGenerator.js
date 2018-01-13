@@ -38,7 +38,9 @@ export class ObjectGenerator {
             this.vec_.add(vector.divideScalar(this.mass));
         }, this);       
     }
-
+    setColor(r, g, b){
+        this.material_.color.setRGB(r, g, b);
+    }
     get mesh() {
         if(!this.mesh_) {
             this.geometry_ = new SphereGeometry(10, 20, 20),
