@@ -49,6 +49,16 @@ export class ObjectGenerator {
         } 
         return this.mesh_;
     }
+    setMesh(R, W, H){
+        this.geometry_ = new SphereGeometry(R, W, H);
+        this.material_ = new MeshBasicMaterial({
+            color: 0xffffff, 
+            vertexColors: FaceColors
+        });
+        this.mesh_ = new Mesh(
+            this.geometry_, this.material_);
+        this.mesh_.position.copy(this.position);
+    }
     get vector() {
         return this.vec_;
     }

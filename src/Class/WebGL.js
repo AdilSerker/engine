@@ -50,7 +50,7 @@ class WebGL {
             0.1, 
             10000
         );
-        this.camera_.position.set(0, 0, 2000);
+        this.camera_.position.set(0, 0, 5000);
     }
 }
 

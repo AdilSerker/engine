@@ -7,6 +7,7 @@ export class Timespace {
         
         this.G = 6.67384e-11;
         this.objectArray_ = [];
+        this.gravity_ = true;
     }
 
     add(...objects){
@@ -16,7 +17,7 @@ export class Timespace {
         });
     }
     _gravityForce(a, b) {
-        if(a.mass && b.mass) {
+        if(a.mass && b.mass && this.gravity) {
             const th = this;
             const r = a.position.distanceTo(b.position);
             const FORCE_MODULE = this.G * a.mass * b.mass / Math.pow(r, 2);
@@ -48,6 +49,12 @@ export class Timespace {
     }
     get scene() {
         return this.space;
+    }
+    get gravity(){
+        return this.gravity_;
+    }
+    set gravity(bool){
+        this.gravity_ = bool; 
     }
 }
 
