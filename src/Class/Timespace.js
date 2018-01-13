@@ -20,16 +20,16 @@ export class Timespace {
         if(a.mass && b.mass && this.gravity) {
             const r = a.position.distanceTo(b.position);
             const FORCE_MODULE = this.G * a.mass * b.mass / Math.pow(r, 2);
-            const force1 = new Vector3();
-            force1.subVectors(a.position, b.position);
-            force1.normalize();
-            force1.multiplyScalar(FORCE_MODULE);
-            b.updateVector(force1);
-            const force2 = new Vector3();
-            force2.subVectors(b.position, a.position);
-            force2.normalize();
-            force2.multiplyScalar(FORCE_MODULE);
-            a.updateVector(force2);
+            const F1 = new Vector3();
+            F1.subVectors(a.position, b.position);
+            F1.normalize();
+            F1.multiplyScalar(FORCE_MODULE);
+            b.updateVector(F1);
+            const F2 = new Vector3();
+            F2.subVectors(b.position, a.position);
+            F2.normalize();
+            F2.multiplyScalar(FORCE_MODULE);
+            a.updateVector(F2);
         }
     }
     move(dt){
