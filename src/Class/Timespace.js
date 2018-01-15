@@ -5,10 +5,12 @@ export class Timespace {
         this.space = new Scene().add(new AmbientLight(0xffffff));
         this.time = new Clock();
         
-        this.G = 6.67384e-11;
+        this.G = 6.67384e-3;
+        
         this.objectArray_ = [];
         this.gravity_ = true;
-    }
+
+    } 
 
     add(...objects){
         objects.forEach((object) => {
@@ -32,6 +34,20 @@ export class Timespace {
             a.updateVector(F2);
         }
     }
+    _collision(a, b){
+        if(a.position.distanceTo(b.position) <= (a.radius + b.radius)){
+            const F1 = new Vector3();
+            F1.subVectors(b.position, a.position);
+            F1.normalize();
+            F1.multiplyScalar(a.vector.length() * a.mass);
+            b.updateVector(F1);
+            const F2 = new Vector3();
+            F2.subVectors(a.position, b.position);
+            F2.normalize();
+            F2.multiplyScalar(b.vector.length() * b.mass);
+            a.updateVector(F2);
+        }
+    }
     move(dt){
         const th = this;
         for(let v of th.objectArray_) {
@@ -42,10 +58,10 @@ export class Timespace {
         const th = this;
         for(let i = 0; i < th.objectArray_.length-1; i++) {
             for(let j = i+1; j < th.objectArray_.length; j++) {
-                th._gravityForce(th.objectArray_[i], th.objectArray_[j])
+                th._gravityForce(th.objectArray_[i], th.objectArray_[j]);
+                th._collision(th.objectArray_[i], th.objectArray_[j]);
             }
         }
-        
     }
     deltaTime(){
         return this.time.getDelta();

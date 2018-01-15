@@ -12,10 +12,14 @@ export class ObjectGenerator {
         };
 
         this.vec_ = new Vector3();
+        this.momentum_ = new Vector3()
         this.geometry_;
         this.material_;
         this.mesh_;
         this.fix_ = false;
+    }
+    get radius(){
+        return this.geometry_.parameters.radius;
     }
     get position() {
         return this.mesh.position;
@@ -34,6 +38,7 @@ export class ObjectGenerator {
     }
     
     updateVector(...vectors){
+        this.momentum_ = new Vector3();
         vectors.forEach((vector) => {
             this.vec_.add(vector.divideScalar(this.mass));
         }, this);       
@@ -43,7 +48,7 @@ export class ObjectGenerator {
     }
     get mesh() {
         if(!this.mesh_) {
-            this.geometry_ = new SphereGeometry(10, 20, 20),
+            this.geometry_ = new SphereGeometry(2, 20, 20),
             this.material_ = new MeshBasicMaterial({
                 color: 0xffffff, 
                 vertexColors: FaceColors
@@ -60,8 +65,7 @@ export class ObjectGenerator {
             color: 0xffffff, 
             vertexColors: FaceColors
         });
-        this.mesh_ = new Mesh(
-            this.geometry_, this.material_);
+        this.mesh_ = new Mesh(this.geometry_, this.material_);
         this.mesh_.position.copy(this.position_);
     }
     get vector() {
