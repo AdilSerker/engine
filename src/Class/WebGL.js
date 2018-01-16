@@ -45,7 +45,7 @@ class WebGL {
     }
     _setCamera(){
         this.camera_ = new PerspectiveCamera(
-            60,
+            45,
             window.innerWidth / window.innerHeight, 
             0.1, 
             1000000

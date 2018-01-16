@@ -36,6 +36,7 @@ export class Timespace {
     }
     _collision(a, b){
         if(a.position.distanceTo(b.position) <= (a.radius + b.radius)){
+            console.log('collision');
             const F1 = new Vector3();
             F1.subVectors(b.position, a.position);
             F1.normalize();

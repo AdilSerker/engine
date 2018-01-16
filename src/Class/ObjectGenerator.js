@@ -12,7 +12,7 @@ export class ObjectGenerator {
         };
 
         this.vec_ = new Vector3();
-        this.momentum_ = new Vector3()
+        this.momentum_ = new Vector3();
         this.geometry_;
         this.material_;
         this.mesh_;
@@ -29,10 +29,13 @@ export class ObjectGenerator {
     }
     fixPosition(bool){
         this.fix_ = bool;
+
+        return this;
     }
     updatePosition(dt){
         const th = this;
         if(!th.fix_){
+            this.vec_.addScaledVector(this.momentum_, dt);
             this.position.addScaledVector(this.vec_, dt);
         };
     }
@@ -40,11 +43,13 @@ export class ObjectGenerator {
     updateVector(...vectors){
         this.momentum_ = new Vector3();
         vectors.forEach((vector) => {
-            this.vec_.add(vector.divideScalar(this.mass));
+            this.momentum_.add(vector.divideScalar(this.mass));
         }, this);       
     }
     setColor(r, g, b){
         this.material_.color.setRGB(r, g, b);
+
+        return this;
     }
     get mesh() {
         if(!this.mesh_) {
@@ -59,6 +64,11 @@ export class ObjectGenerator {
         } 
         return this.mesh_;
     }
+    startVector(x, y, z){
+        this.vec_.add(new Vector3(x, y, z));
+
+        return this;
+    }
     setMesh(R, W, H){
         this.geometry_ = new SphereGeometry(R, W, H);
         this.material_ = new MeshBasicMaterial({
@@ -67,6 +77,8 @@ export class ObjectGenerator {
         });
         this.mesh_ = new Mesh(this.geometry_, this.material_);
         this.mesh_.position.copy(this.position_);
+
+        return this;
     }
     get vector() {
         return this.vec_;
