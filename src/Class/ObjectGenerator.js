@@ -35,15 +35,13 @@ export class ObjectGenerator {
     updatePosition(dt){
         const th = this;
         if(!th.fix_){
-            this.vec_.addScaledVector(this.momentum_, dt);
             this.position.addScaledVector(this.vec_, dt);
         };
     }
     
-    updateVector(...vectors){
-        this.momentum_ = new Vector3();
+    updateVector(dt, ...vectors){
         vectors.forEach((vector) => {
-            this.momentum_.add(vector.divideScalar(this.mass));
+            this.vec_.add(vector.multiplyScalar(dt/this.mass));
         }, this);       
     }
     setColor(r, g, b){

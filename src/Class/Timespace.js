@@ -18,35 +18,25 @@ export class Timespace {
             this.objectArray_.push(object);
         });
     }
-    _gravityForce(a, b) {
+    _gravityForce(dt, a, b) {
         if(a.mass && b.mass && this.gravity) {
             const r = a.position.distanceTo(b.position);
             const FORCE_MODULE = this.G * a.mass * b.mass / Math.pow(r, 2);
-            const F1 = new Vector3();
-            F1.subVectors(a.position, b.position);
-            F1.normalize();
-            F1.multiplyScalar(FORCE_MODULE);
-            b.updateVector(F1);
-            const F2 = new Vector3();
-            F2.subVectors(b.position, a.position);
-            F2.normalize();
-            F2.multiplyScalar(FORCE_MODULE);
-            a.updateVector(F2);
+
+            const gravityForce_1 = new Vector3();
+            gravityForce_1.subVectors(b.position, a.position).normalize();
+            gravityForce_1.multiplyScalar(FORCE_MODULE);
+            a.updateVector(dt, gravityForce_1);
+
+            const gravityForce_2 = new Vector3();
+            gravityForce_2.subVectors(a.position, b.position).normalize();
+            gravityForce_2.multiplyScalar(FORCE_MODULE);
+            b.updateVector(dt, gravityForce_2);
         }
     }
-    _collision(a, b){
+    _collision(dt, a, b){
         if(a.position.distanceTo(b.position) <= (a.radius + b.radius)){
             console.log('collision');
-            const F1 = new Vector3();
-            F1.subVectors(b.position, a.position);
-            F1.normalize();
-            F1.multiplyScalar(a.vector.length() * a.mass);
-            b.updateVector(F1);
-            const F2 = new Vector3();
-            F2.subVectors(a.position, b.position);
-            F2.normalize();
-            F2.multiplyScalar(b.vector.length() * b.mass);
-            a.updateVector(F2);
         }
     }
     move(dt){
@@ -55,12 +45,12 @@ export class Timespace {
             v.updatePosition(dt);
         }
     }
-    accelerate(){
+    accelerate(dt){
         const th = this;
         for(let i = 0; i < th.objectArray_.length-1; i++) {
             for(let j = i+1; j < th.objectArray_.length; j++) {
-                th._gravityForce(th.objectArray_[i], th.objectArray_[j]);
-                th._collision(th.objectArray_[i], th.objectArray_[j]);
+                th._gravityForce(dt, th.objectArray_[j], th.objectArray_[i]);
+                th._collision(dt, th.objectArray_[i], th.objectArray_[j]);
             }
         }
     }
