@@ -2,6 +2,7 @@ const { SphereGeometry, Vector3,
     FaceColors, Mesh, MeshBasicMaterial } = require('three');
 
 export class ObjectGenerator {
+
     constructor(x, y, z, mass){
         this.mass = mass || 0;
 
@@ -17,21 +18,27 @@ export class ObjectGenerator {
         this.material_;
         this.mesh_;
         this.fix_ = false;
+        this.f = 1;
     }
+
     get radius(){
         return this.geometry_.parameters.radius;
     }
+
     get position() {
         return this.mesh.position;
     }
+
     set position(vector){
         this.mesh.position.copy(vector);
     }
+
     fixPosition(bool){
         this.fix_ = bool;
 
         return this;
     }
+
     updatePosition(dt){
         const th = this;
         if(!th.fix_){
@@ -44,11 +51,13 @@ export class ObjectGenerator {
             this.vec_.add(vector.multiplyScalar(dt/this.mass));
         }, this);       
     }
+
     setColor(r, g, b){
         this.material_.color.setRGB(r, g, b);
 
         return this;
     }
+
     get mesh() {
         if(!this.mesh_) {
             this.geometry_ = new SphereGeometry(2, 20, 20),
@@ -62,11 +71,13 @@ export class ObjectGenerator {
         } 
         return this.mesh_;
     }
+
     startVector(x, y, z){
         this.vec_.add(new Vector3(x, y, z));
 
         return this;
     }
+
     setMesh(R, W, H){
         this.geometry_ = new SphereGeometry(R, W, H);
         this.material_ = new MeshBasicMaterial({
@@ -78,7 +89,12 @@ export class ObjectGenerator {
 
         return this;
     }
+    
     get vector() {
         return this.vec_;
+    }
+
+    set vector(vector) {
+        this.vec_ = vector;
     }
 }
