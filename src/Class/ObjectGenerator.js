@@ -18,7 +18,6 @@ export class ObjectGenerator {
         this.material_;
         this.mesh_;
         this.fix_ = false;
-        this.f = 1;
     }
 
     get radius(){
@@ -33,15 +32,14 @@ export class ObjectGenerator {
         this.mesh.position.copy(vector);
     }
 
-    fixPosition(bool){
-        this.fix_ = bool;
+    fixPosition(){
+        this.fix_ = true;
 
         return this;
     }
 
     updatePosition(dt){
-        const th = this;
-        if(!th.fix_){
+        if(!this.fix_){
             this.position.addScaledVector(this.vec_, dt);
         };
     }
