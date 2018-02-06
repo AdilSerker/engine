@@ -13,7 +13,6 @@ export class ObjectGenerator {
         };
 
         this.vec_ = new Vector3();
-        this.momentum_ = new Vector3();
         this.geometry_;
         this.material_;
         this.mesh_;
@@ -32,7 +31,7 @@ export class ObjectGenerator {
         this.mesh.position.copy(vector);
     }
 
-    fixPosition(){
+    positionFix(){
         this.fix_ = true;
 
         return this;
@@ -86,6 +85,10 @@ export class ObjectGenerator {
         this.mesh_.position.copy(this.position_);
 
         return this;
+    }
+
+    get momentum() {
+        return this.vector.clone().multiplyScalar(this.mass);
     }
     
     get vector() {

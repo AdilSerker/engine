@@ -42,15 +42,25 @@ export class Timespace {
         const aPos = a.position.clone().addScaledVector(a.vector, this.dt);
         const bPos = b.position.clone().addScaledVector(b.vector, this.dt);
         if((a.radius + b.radius) > aPos.distanceTo(bPos)){
-            console.log('collision');  
+            console.log('collision');
             
-            const normal = new Vector3();
-            normal.subVectors(b.position, a.position).normalize();
+            const N = new Vector3();
+            N.subVectors(a.position, b.position).normalize();
+            
+            const a1 = N.dot(a.vector);
+            const a2 = N.dot(b.vector);
 
-            const FORCE_MODULE = a.mass*a.vector.length() + b.mass*b.vector.length();
+            const optimizedP = (2 * (a1 - a2)) / (a.mass + b.mass);
 
-            a.updateVector(this.dt, normal.multiplyScalar(-1*FORCE_MODULE));
-            b.updateVector(this.dt, normal.multiplyScalar(-1*FORCE_MODULE));
+            const newV1 = new Vector3();
+            newV1.subVectors(a.vector, N.clone().multiplyScalar(optimizedP * b.mass));
+
+            const newV2 = new Vector3();
+            newV2.addVectors(b.vector, N.clone().multiplyScalar(optimizedP * a.mass));
+
+            a.vector = newV1;
+            b.vector = newV2;
+
         }
     }
 
