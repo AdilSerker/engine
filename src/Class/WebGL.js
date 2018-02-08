@@ -9,12 +9,12 @@ function fpsRender(dt){
     return fps;
 }
 
-class WebGL {
+export class WebGL {
     constructor(){
         this.canvas_;
         this.render_;
         this.camera_;
-        this.config_;
+        this.scene_;
     }
     getInstance(){
         this._setCanvas();
@@ -23,7 +23,7 @@ class WebGL {
         return this;
     }
     render(dt){
-        this.render_.render(this.config_.scene, this.camera_);
+        this.render_.render(this.scene_, this.camera_);
         fpsRender(dt);
     }
     
@@ -32,16 +32,14 @@ class WebGL {
         document.body.appendChild(this.canvas_);
         this.canvas_.setAttribute('width', window.innerWidth);
         this.canvas_.setAttribute('height', window.innerHeight);
-    }
-    setRender(scene){
         this.render_ = new WebGLRenderer({
             canvas: this.canvas_, 
             antialias: true
         });
         this.render_.setClearColor(0x000000);
-        this.config_ = {
-            scene: scene,
-        }
+    }
+    setRender(scene){
+        this.scene_ = scene;
     }
     _setCamera(){
         this.camera_ = new PerspectiveCamera(
@@ -50,8 +48,6 @@ class WebGL {
             0.1, 
             1000000
         );
-        this.camera_.position.set(0, 0, 50);
+        this.camera_.position.set(0, 0, 150);
     }
 }
-
-export const webgl = new WebGL().getInstance();
