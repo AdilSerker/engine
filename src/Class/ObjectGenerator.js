@@ -1,5 +1,6 @@
 const { SphereGeometry, Vector3,
     FaceColors, Mesh, MeshBasicMaterial } = require('three');
+const three = require('three');
 
 export class ObjectGenerator {
 
@@ -57,7 +58,7 @@ export class ObjectGenerator {
 
     get mesh() {
         if(!this.mesh_) {
-            this.geometry_ = new SphereGeometry(2, 20, 20),
+            this.geometry_ = new SphereGeometry(1, 2, 2),
             this.material_ = new MeshBasicMaterial({
                 color: 0xffffff, 
                 vertexColors: FaceColors
@@ -77,9 +78,9 @@ export class ObjectGenerator {
 
     setMesh(R, W, H){
         this.geometry_ = new SphereGeometry(R, W, H);
-        this.material_ = new MeshBasicMaterial({
-            color: 0xffffff, 
-            vertexColors: FaceColors
+        this.material_ = new MeshStandardMaterial({
+            color: 0xffffff 
+            // vertexColors: FaceColors
         });
         this.mesh_ = new Mesh(this.geometry_, this.material_);
         this.mesh_.position.copy(this.position_);
@@ -99,3 +100,4 @@ export class ObjectGenerator {
         this.vec_ = vector;
     }
 }
+

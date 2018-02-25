@@ -1,8 +1,15 @@
+const three = require('three');
 const { Vector3 } = require('three');
 const { WebGL } = require('./Class/WebGL');
 const { ObjectGenerator } = require('./Class/ObjectGenerator');
+const { LightSphere } = require('./Class/LightSphere');
 const { timespace } = require('./Class/Timespace');
 // timespace.gravity = false;
+
+function gri(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 
 const webgl = (new WebGL()).getInstance();
 
@@ -12,20 +19,22 @@ const MOON_MASS = 5.9722e+24/81.3;
 
 const T = 1000;
 
-let obj1 = new ObjectGenerator(25, 50, 0, 4000*T);
-    obj1.setMesh(1, 20, 20).setColor(1, 0, 1);
 
-let obj2 = new ObjectGenerator(10, -30, 0, 2000*T);
-    obj2.setMesh(1, 20, 20).setColor(0, 1, 1);
 
-let obj3 = new ObjectGenerator(-60, -15, 0, 4000*T);
-    obj3.setMesh(1, 20, 20).setColor(1, 1, 0);
+let objs = [
+    // new ObjectGenerator(0,0,0,500*T)
+]
 
-timespace.add([
-    obj2,
-    obj1,
-    obj3
-]);
+for (let i = 0; i < 300; ++i) {
+    objs.push((new ObjectGenerator(gri(-150, 150),gri(-150, 150),gri(-150, 150), 10*T))
+        // .startVector(gri(-10, 10),gri(-10, 10),gri(-10, 10))
+    );
+}
+
+
+timespace.add(    
+    objs
+);
 
 webgl.setRender(timespace.scene);
  

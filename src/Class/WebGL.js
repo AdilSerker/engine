@@ -48,6 +48,6 @@ export class WebGL {
             0.1, 
             1000000
         );
-        this.camera_.position.set(0, 0, 150);
+        this.camera_.position.set(0, 0, 500);
     }
 }

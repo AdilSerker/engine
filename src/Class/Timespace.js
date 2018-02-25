@@ -3,7 +3,8 @@ const { Vector3, Scene, AmbientLight, Clock } = require('three');
 export class Timespace {
 
     constructor(){
-        this.space = new Scene().add(new AmbientLight(0xffffff));
+        this.space = new Scene()
+        // .add(new AmbientLight(0xffffff));
         this.time = new Clock();
         
         this.G = 6.67384e-3;
